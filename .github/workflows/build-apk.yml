@@ -8,19 +8,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    container:
+      image: kivy/buildozer:latest
+
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
-      - name: Construire l'APK (Buildozer)
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
+      - name: Construire l'APK
+        run: |
+          buildozer android debug
 
-      - name: Mettre l'APK à disposition en téléchargement
+      - name: Mettre l'APK à disposition
         uses: actions/upload-artifact@v4
         with:
           name: TraitesBancaires-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
